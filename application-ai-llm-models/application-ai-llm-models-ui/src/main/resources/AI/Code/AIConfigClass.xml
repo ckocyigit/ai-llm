@@ -91,6 +91,20 @@
       <validationRegExp/>
       <classType>com.xpn.xwiki.objects.classes.PasswordClass</classType>
     </token>
+    <queryParameters>
+      <customDisplay/>
+      <disabled>0</disabled>
+      <hint>Optional query parameters applied to every request</hint>
+      <name>queryParameters</name>
+      <number>7</number>
+      <picker>1</picker>
+      <prettyName>AI Code Server Query Parameters</prettyName>
+      <size>30</size>
+      <unmodifiable>0</unmodifiable>
+      <validationMessage/>
+      <validationRegExp/>
+      <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+    </queryParameters>
     <url>
       <customDisplay/>
       <disabled>0</disabled>

@@ -24,10 +24,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -138,7 +140,7 @@ public class RequestHelper
     private <T> HttpRequest prepareRequest(String path, GPTAPIConfig config, T body) throws IOException
     {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(config.getURL() + path))
+            .uri(buildEndpointURI(config, path))
             .header("Authorization", BEARER + config.getToken())
             .header("Accept", APPLICATION_JSON)
             .header("Content-Type", APPLICATION_JSON)
@@ -151,5 +153,39 @@ public class RequestHelper
         }
 
         return builder.build();
+    }
+
+    private URI buildEndpointURI(GPTAPIConfig config, String path) throws IOException
+    {
+        try {
+            URI baseURI = URI.create(config.getURL());
+            String basePath = StringUtils.defaultString(baseURI.getPath());
+            if (!basePath.endsWith("/")) {
+                basePath += '/';
+            }
+
+            String endpointPath = StringUtils.removeStart(path, "/");
+            String query = joinQueryParts(baseURI.getQuery(), config.getQueryParameters());
+
+            return new URI(baseURI.getScheme(), baseURI.getAuthority(), basePath + endpointPath, query,
+                baseURI.getFragment());
+        } catch (IllegalArgumentException | URISyntaxException e) {
+            throw new IOException("Invalid AI provider URL configuration", e);
+        }
+    }
+
+    private String joinQueryParts(String... queryParts)
+    {
+        StringJoiner joiner = new StringJoiner("&");
+        for (String queryPart : queryParts) {
+            String normalizedQuery = StringUtils.trimToEmpty(queryPart);
+            normalizedQuery = StringUtils.removeStart(normalizedQuery, "?");
+            if (StringUtils.isNotEmpty(normalizedQuery)) {
+                joiner.add(normalizedQuery);
+            }
+        }
+
+        String mergedQuery = joiner.toString();
+        return StringUtils.isEmpty(mergedQuery) ? null : mergedQuery;
     }
 }

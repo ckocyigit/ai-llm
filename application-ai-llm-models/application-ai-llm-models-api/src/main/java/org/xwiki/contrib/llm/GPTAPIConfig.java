@@ -29,6 +29,7 @@ public class GPTAPIConfig
 {
     private String name;
     private String url;
+    private String queryParameters;
     private String token;
     private boolean canStream;
 
@@ -41,6 +42,7 @@ public class GPTAPIConfig
     {
         this.name = (String) properties.get("Name");
         this.url = (String) properties.get("url");
+        this.queryParameters = (String) properties.get("queryParameters");
         this.token = (String) properties.get("token");
         Integer requestMode = (Integer) properties.get("Requestmode");
         this.canStream = requestMode != null && requestMode == 1;
@@ -80,6 +82,14 @@ public class GPTAPIConfig
     }
 
     /**
+     * @return The optional query parameters that are appended to each provider request.
+     */
+    public String getQueryParameters()
+    {
+        return queryParameters;
+    }
+
+    /**
      * @return true if the configuration can use a streaming API, else false.
      */
     public Boolean getCanStream()
@@ -95,6 +105,7 @@ public class GPTAPIConfig
     {
         String res = "Name : " + name;
         res += " URL : " + url;
+        res += " queryParameters : " + queryParameters;
         res += " Token : " + token;
         res += " canStream : " + canStream;
         return res;

@@ -58,10 +58,12 @@ llm.ui.featureMenuPlaceholder=Select a Prompt
 llm.ui.applicationsPanelEntryLabel=LLM Application
 llm.config.label=LLM Assistant Configuration
 llm.config.label.hint=Configuration for the LLM application, need at least one configuration with one model and the \
-    associated URL prefix/token to work. The URL prefix should allow access to /chat/completions, and /models when the \
+  associated URL prefix/token to work. The URL prefix should allow access to /chat/completions, and /models when the \
     configured list of models is empty. For example, if the prefix looks like http://example.url.com/ then http://example.url.com/models and http://example.url.com/chat/completions should be accessible.
+  You can optionally configure query parameters that are appended to each request, e.g. api-version=2025-04-01-preview.
 llm.config.name=Server Name
 llm.config.url=URL prefix
+llm.config.queryParameters=Query parameters
 llm.config.token=Token
 llm.config.configfile=Chat models
 llm.config.embeddingModels=Embedding models
